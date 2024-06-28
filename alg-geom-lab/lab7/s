@@ -1,0 +1,49 @@
+def intersectie(semiplane, Q):
+    maximX, maximY = 9999999999, 9999999999
+    minimX, minimY = -9999999999, -9999999999
+
+    for semiplan in semiplane:
+        if semiplan[0] == 0:  # este semiplan vertical
+            if (semiplan[2]+ semiplan[1] * Q[1] ) >= 0:
+                continue
+        else:  # este semiplan orizontal
+            if (semiplan[2] + semiplan[0] * Q[0] ) >= 0:
+                continue
+
+        if semiplan[0] == 0:  # este semiplan vertical
+            if -1 * semiplan[2] / semiplan[1] < Q[1]:
+                minimY = max(minimY, -1 * semiplan[2] / semiplan[1])
+            else:
+                maximY = min(maximY, -1 * semiplan[2] / semiplan[1])
+        else:  # este semiplan orizontal
+            if -1 * semiplan[2] / semiplan[0] < Q[0]:
+                minimX = max(minimX, -1 * semiplan[2] / semiplan[0])
+            else:
+                maximX = min(maximX, -1 * semiplan[2] / semiplan[0])
+
+    if  max(maximX, maximY) == 9999999999 or min(minimX, minimY) == -9999999999 :
+        return 0 # nu exista dreptunghiuri
+    return (maximX - minimX) * (maximY - minimY) # calculez valoarea ariilor
+
+semiplane = []
+n = int(input())
+for i in range (n):
+    a,b,c = map(float, input().split())
+    semiplane.append((a,b,c))
+
+puncte = []
+m = int(input())
+for i in range(m):
+    x,y = map(float, input().split())
+    puncte.append((x,y))
+
+results = []
+for punct in puncte:
+    results.append(intersectie(semiplane, punct))
+
+for res in results:
+    if res == 0:
+        print("NO")
+    else:
+        print("YES")
+        print("{:.6f}".format(res))
